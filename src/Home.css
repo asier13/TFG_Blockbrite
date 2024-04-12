@@ -1,0 +1,103 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Asegúrate de que no haya desplazamiento en el body */
+  }
+  
+  #root, .home {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+  }
+  .home {
+    color: white;
+    font-family: 'Arial', sans-serif;
+    flex: 1; /* Esto asegurará que el div .home ocupe todo el espacio vertical */
+    background-image: url('./assets/background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+  
+  /* Estilos del footer */
+  .footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: auto; /* Empuja el footer al final de la página */
+  }
+
+  .logo {
+    width: 70px; /* Ajusta esto según el tamaño de tu logo */
+  }
+  
+  .navigation {
+    display: flex;
+  }
+  
+  .nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 15px;
+  }
+  
+  .main-section {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  
+  .zeus-image {
+    flex: 1.5;
+  }
+  
+  .zeus-image img {
+    width: 100%; /* O el tamaño que prefieras */
+    max-width: 600px; /* Ajusta según el tamaño deseado */
+    height: auto;
+  }
+  
+  .main-content {
+    flex: 2;
+    padding: 0 5rem; /* Ajusta el espacio alrededor del contenido */
+  }
+  
+  .main-content h1 {
+    font-size: 3rem; /* Ajusta el tamaño del título según sea necesario */
+    margin-bottom: 2rem;
+  }
+  
+  .button-group .btn {
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    margin-right: 1rem;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button-group .explore {
+    background-color: #555; /* Ajusta el color */
+  }
+  
+  .button-group .create {
+    background-color: #f80; /* Ajusta el color */
+  }
+  
+  .button-group .btn:hover {
+    opacity: 0.9;
+  }
+  
