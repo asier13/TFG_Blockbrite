@@ -1,45 +1,47 @@
-import { useEffect, useState } from 'react';
-import Web3 from 'web3';
+import { useState, useEffect } from 'react';
+import MyNFTAbi from '../abis/MyNFT.json';
+import contractAddress from '../contractAddress';
+const ethers = require('ethers');
 
 const useWeb3 = () => {
-  const [web3, setWeb3] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [provider, setProvider] = useState(null);
+  const [signer, setSigner] = useState(null);
+  const [contract, setContract] = useState(null);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    const loadWeb3 = async () => {
-      if (window.ethereum) {
-        const web3Instance = new Web3(window.ethereum);
-        try {
-          await window.ethereum.request({ method: 'eth_requestAccounts' });
-          setWeb3(web3Instance);
-        } catch (error) {
-          setError('User denied account access');
-        }
-      } else if (window.web3) {
-        setWeb3(new Web3(window.web3.currentProvider));
-      } else {
-        setError('Non-Ethereum browser detected. Consider trying MetaMask!');
+    if (window.ethereum) {
+      try {
+        const web3Provider = new ethers.BrowserProvider(window.ethereum);
+        const web3Signer = web3Provider.getSigner();
+        const nftContract = new ethers.Contract(contractAddress, MyNFTAbi.abi, web3Signer);
+
+        setProvider(web3Provider);
+        setSigner(web3Signer);
+        setContract(nftContract);
+      } catch (err) {
+        console.error('useWeb3: ', err);
+        setError('Failed to initialize web3, make sure you have MetaMask!');
       }
-      setLoading(false);
-    };
-
-    window.ethereum.on('accountsChanged', (accounts) => {
-      if (accounts.length === 0) {
-        // Handle case when user logs out of MetaMask
-        setError('Please connect to MetaMask.');
-      } else {
-        // Handle account change
-        setWeb3(new Web3(window.ethereum));
-      }
-    });
-
-    window.ethereum.on('chainChanged', (_chainId) => window.location.reload());
-
-    loadWeb3();
+    } else {
+      setError('Please install MetaMask to use this app.');
+    }
   }, []);
 
-  return { web3, loading, error };
+  // Función para conectar la cartera de MetaMask
+  const connectWallet = async () => {
+    try {
+      await provider.send('eth_requestAccounts', []);
+      const web3Signer = provider.getSigner();
+      setSigner(web3Signer);
+      setError('');
+    } catch (err) {
+      console.error('useWeb3 - connectWallet: ', err);
+      setError('Failed to connect wallet.');
+    }
+  };
+
+  return { provider, signer, contract, error, connectWallet };
 };
 
 export default useWeb3;

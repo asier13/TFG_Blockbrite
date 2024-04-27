@@ -1,0 +1,26 @@
+.nft-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s ease;
+  }
+  
+  .nft-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .nft-image {
+    width: 100%;
+    object-fit: cover;
+    height: 200px; /* o la altura que prefieras */
+  }
+  
+  .nft-info {
+    padding: 15px;
+  }
+  
+  .nft-info h3 {
+    margin-top: 0;
+  }
+  

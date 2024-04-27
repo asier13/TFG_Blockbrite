@@ -1,63 +1,122 @@
+// src/pages/CreateNFT.js
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { pinFileToIPFS } from '../utils/ipfs';
 import { useMintNFT } from '../hooks/useMintNFT';
-import { Link } from 'react-router-dom';
 
 const CreateNFT = () => {
-  const [file, setFile] = useState(null);
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const { createNFT } = useMintNFT();
+  const [nftData, setNftData] = useState([{ name: '', description: '', price: '', image: null }]);
+  const { mintMultipleNFTs } = useMintNFT();
 
-  const handleImageUpload = async (e) => {
-    const imageFile = e.target.files[0];
-    setFile(imageFile);
+  const handleInputChange = (index, e) => {
+    const values = [...nftData];
+    values[index][e.target.name] = e.target.value;
+    setNftData(values);
+  };
+
+  const handleImageChange = (index, e) => {
+    const values = [...nftData];
+    values[index].image = e.target.files[0];
+    setNftData(values);
+  };
+
+  const handleAddFields = () => {
+    const values = [...nftData];
+    values.push({ name: '', description: '', price: '', image: null });
+    setNftData(values);
+  };
+
+  const handleRemoveFields = index => {
+    const values = [...nftData];
+    values.splice(index, 1);
+    setNftData(values);
   };
 
   const handleMint = async () => {
-    if (!file || !name || !description) {
-      alert('Please fill out all fields and select an image.');
-      return;
+    for (const nft of nftData) {
+      if (!nft.name || !nft.description || !nft.price || !nft.image) {
+        alert('Please fill out all fields for each NFT.');
+        return;
+      }
     }
 
     try {
-      // Subir imagen
-      const imageUrl = await pinFileToIPFS(file);
-      
-      // Crear metadatos
-      const metadata = {
-        name,
-        description,
-        image: imageUrl,
-      };
+      const metadataUrls = [];
+      const prices = [];
 
-      // Subir metadatos
-      const metadataUrl = await pinFileToIPFS(new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+      for (const nft of nftData) {
+        // Subir la imagen a IPFS
+        const imageUrl = await pinFileToIPFS(nft.image);
 
-      // Mintear NFT
-      await createNFT(metadataUrl);
-      alert('NFT minted successfully!');
+        // Crear metadatos
+        const metadata = {
+          name: nft.name,
+          description: nft.description,
+          image: imageUrl,
+        };
+
+        // Subir metadatos a IPFS
+        const metadataUrl = await pinFileToIPFS(new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+        metadataUrls.push(metadataUrl);
+
+        // Guardar los precios
+        prices.push(nft.price);
+      }
+
+      // Mintear múltiples NFTs
+      await mintMultipleNFTs(metadataUrls, prices);
+      alert('NFTs minted successfully!');
     } catch (error) {
-      console.error('Failed to mint NFT:', error);
-      alert('There was an error minting the NFT.');
+      console.error('Failed to mint NFTs:', error);
+      alert('There was an error minting the NFTs: ' + (error.message || "Unknown error"));
     }
   };
 
   return (
-    <div className="home-container">
-      <header className="home-header">
-        <Link to="/">Inicio</Link>
+    <div className="create-nft-page">
+      <header className="header">
+        <Link to="/">Home</Link>
         <Link to="/marketplace">Marketplace</Link>
-        <Link to="/create-nft">Crear NFT</Link>
-        {/* Más enlaces si son necesarios */}
       </header>
-    <div>
-      <h1>Create NFT</h1>
-      <input type="text" placeholder="NFT Name" value={name} onChange={(e) => setName(e.target.value)} />
-      <textarea placeholder="NFT Description" value={description} onChange={(e) => setDescription(e.target.value)} />
-      <input type="file" onChange={handleImageUpload} />
-      <button onClick={handleMint}>Mint NFT</button>
-    </div>
+      <main>
+        <h1>Create Multiple NFTs</h1>
+        {nftData.map((nft, index) => (
+          <div key={index} className="nft-input-group">
+            <input
+              type="text"
+              placeholder="NFT Name"
+              name="name"
+              value={nft.name}
+              onChange={e => handleInputChange(index, e)}
+            />
+            <textarea
+              placeholder="NFT Description"
+              name="description"
+              value={nft.description}
+              onChange={e => handleInputChange(index, e)}
+            />
+            <input
+              type="text"
+              placeholder="NFT Price in ETH (0 if not for sale)"
+              name="price"
+              value={nft.price}
+              onChange={e => handleInputChange(index, e)}
+            />
+            <input
+              type="file"
+              name="image"
+              onChange={e => handleImageChange(index, e)}
+            />
+            {nftData.length > 1 && (
+              <button type="button" onClick={() => handleRemoveFields(index)}>Remove</button>
+            )}
+          </div>
+        ))}
+        {nftData.length < 10 && (
+          <button type="button" onClick={handleAddFields}>Add More NFTs</button>
+        )}
+        <button type="button" onClick={handleMint}>Mint NFTs</button>
+      </main>
     </div>
   );
 };

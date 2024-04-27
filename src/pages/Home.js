@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import '../Home.css'; // Asegúrate de que la ruta al archivo CSS es correcta
 import logo from '../assets/logo.png'; // Asegúrate de que la ruta al logo es correcta
 import zeusImage from '../assets/zeus.png'; // Asegúrate de que la ruta a la imagen de Zeus es correcta
+import wallet from '../assets/wallet.png'; 
 import Footer from '../components/Footer';
 
 const Home = () => {
@@ -16,6 +17,7 @@ const Home = () => {
             <Link to="/" className="nav-link">Inicio</Link>
             <Link to="/marketplace" className="nav-link">Marketplace</Link>
             <Link to="/create-nft" className="nav-link">Crear NFT</Link>
+            <Link to="/profile"><img src={wallet} alt="wallet Logo" className="wallet"/></Link>
           </nav>
         </header>
         <div className="main-section">

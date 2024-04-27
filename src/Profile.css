@@ -1,0 +1,39 @@
+.profile {
+  padding: 20px;
+}
+
+.profile h1 {
+  margin-bottom: 20px;
+}
+
+.nft-grid {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+}
+
+.nft-grid .nft-card {
+  flex: 0 0 auto; /* Asegura que las tarjetas no crezcan y se queden del tamaño especificado */
+  width: 200px; /* Ancho deseado de las tarjetas */
+}
+
+.nft-grid .nft-card img {
+  max-width: 100%; /* Asegura que la imagen sea completamente visible dentro de la tarjeta */
+  height: auto; /* Mantiene la relación de aspecto de la imagen */
+}
+
+/* Estilo para pantallas más pequeñas, dos tarjetas por fila */
+@media (max-width: 768px) {
+  .nft-card {
+    flex: 0 1 calc(50% - 20px);
+    max-width: calc(50% - 20px);
+  }
+}
+
+/* Estilo para pantallas muy pequeñas, una tarjeta por fila */
+@media (max-width: 480px) {
+  .nft-card {
+    flex: 0 1 100%;
+    max-width: 100%;
+  }
+}

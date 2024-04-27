@@ -1,30 +1,43 @@
+// src/hooks/useMintNFT.js
 import MyNFTAbi from '../abis/MyNFT.json';
 import contractAddress from '../contractAddress';
-const ethers = require("ethers")
+const ethers = require('ethers');
 
 export const useMintNFT = () => {
-  const createNFT = async (metadataURI) => {
+  const mintMultipleNFTs = async (tokenURIs, prices) => {
     if (!window.ethereum) {
-      throw new Error("No Ethereum browser extension detected");
+      throw new Error('No Ethereum browser extension detected');
     }
 
-    await window.ethereum.request({ method: 'eth_requestAccounts' }); // solicitar al usuario que conecte su cartera
-    
+    // Solicitar al usuario que conecte su cartera
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+    // Crear una instancia del provider y del signer
     const provider = new ethers.BrowserProvider(window.ethereum);
-    const signer = await provider.getSigner()
+    const signer = await provider.getSigner();
+    
+    // Crear una instancia del contrato
     const nftContract = new ethers.Contract(contractAddress, MyNFTAbi.abi, signer);
 
     try {
-        const address = await signer.getAddress();
-        const transaction = await nftContract.mintNFT(address, metadataURI);
-        await transaction.wait();
-        alert('NFT minted successfully. Transaction hash: ' + transaction.hash);
+      // Convertir los precios a Wei
+      const pricesInWei = prices.map((price) => ethers.parseEther(price.toString()));
+
+      // Llamar a la función del contrato para mintear múltiples NFTs
+      const transaction = await nftContract.mintMultipleNFTs(signer.getAddress(), tokenURIs, pricesInWei);
+      // Esperar a que la transacción se confirme
+      await transaction.wait();
+      
+      // Alerta de éxito
+      alert('NFTs minted successfully. Transaction hash: ' + transaction.hash);
     } catch (error) {
-      alert('Failed to mint NFT: ' + error.message);
+      // Manejo de errores
+      console.error('Failed to mint NFTs:', error);
+      alert('Failed to mint NFTs: ' + error.message);
     }
   };
 
-  return { createNFT };
+  return { mintMultipleNFTs };
 };
 
 export default useMintNFT;

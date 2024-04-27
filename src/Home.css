@@ -38,7 +38,9 @@ html, body {
   .logo {
     width: 70px; /* Ajusta esto según el tamaño de tu logo */
   }
-  
+  .wallet {
+    width: 40px; /* Ajusta esto según el tamaño de tu logo */
+  }
   .navigation {
     display: flex;
   }

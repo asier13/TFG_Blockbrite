@@ -1,63 +1,63 @@
 import { useState, useEffect } from 'react';
-import useWeb3 from './useWeb3';
+const ethers = require('ethers');
 
 const useMetaMask = () => {
   const [account, setAccount] = useState(null);
   const [error, setError] = useState(null);
   const [isConnecting, setIsConnecting] = useState(false);
-  const web3 = useWeb3();
-
-  // Manejar el cambio de cuenta
-  const handleAccountsChanged = (accounts) => {
-    if (accounts.length === 0) {
-      setError('Please connect to MetaMask.');
-    } else {
-      setAccount(accounts[0]);
-    }
-  };
-
-  // Manejar el cambio de red
-  const handleChainChanged = () => {
-    // Recargar la página para evitar inconsistencias de estado
-    window.location.reload();
-  };
 
   // Conectar a MetaMask
   const connectMetaMask = async () => {
     setIsConnecting(true);
     try {
-      const accounts = await web3.eth.requestAccounts();
-      setAccount(accounts[0]);
+      // Usar ethers para solicitar cuentas
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = provider.getSigner();
+      setAccount(await signer.getAddress());
       setError(null);
-    } catch (error) {
-      setError(error.message);
+    } catch (err) {
+      setError('Failed to connect to MetaMask: ' + err.message);
     }
     setIsConnecting(false);
   };
 
   useEffect(() => {
-    if (web3) {
-      web3.eth.getChainId().then((chainId) => {
-        if (chainId.toString() !== '11155111') { // Chain ID para Sepolia
+    if (window.ethereum) {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+
+      provider.getNetwork().then((network) => {
+        // Comprobar si la cadena de bloques es la correcta de Sepolia
+        if (network.chainId !== 11155111) {
           setError('Please switch to the Sepolia Testnet.');
-        } else {
-          web3.eth.getAccounts().then(handleAccountsChanged).catch(setError);
         }
       });
+
+      provider.listAccounts().then((accounts) => {
+        if (accounts.length > 0) {
+          setAccount(accounts[0]);
+        }
+      }).catch(setError);
+
+      // Escuchar cambios en la cuenta
+      window.ethereum.on('accountsChanged', (accounts) => {
+        if (accounts.length > 0) {
+          setAccount(accounts[0]);
+        } else {
+          setAccount(null);
+        }
+      });
+
+      // Escuchar cambios en la red
+      window.ethereum.on('chainChanged', (_chainId) => window.location.reload());
     }
-
-    // Escuchar cambios en la cuenta
-    window.ethereum?.on('accountsChanged', handleAccountsChanged);
-
-    // Escuchar cambios en la red
-    window.ethereum?.on('chainChanged', handleChainChanged);
 
     return () => {
       // Limpiar listeners al desmontar el componente
-      window.ethereum?.removeListener('accountsChanged', handleAccountsChanged);
-      window.ethereum?.removeListener('chainChanged', handleChainChanged);
+      window.ethereum.removeListener('accountsChanged', connectMetaMask);
+      window.ethereum.removeListener('chainChanged', (_chainId) => window.location.reload());
     };
-  }, [web3]);
+  }, []);
 
   return { account, error, isConnecting, connectMetaMask };
 };
