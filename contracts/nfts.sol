@@ -21,7 +21,7 @@ contract MyNFT is ERC721URIStorage, ERC721Enumerable, Ownable {
 
     constructor() ERC721("MyNFT", "MNFT") {}
 
-    function mintMultipleNFTs(address recipient, string[] memory tokenURIs, uint256[] memory prices) public onlyOwner {
+    function mintMultipleNFTs(address recipient, string[] memory tokenURIs, uint256[] memory prices) public {
         require(tokenURIs.length == prices.length, "URIs and prices length mismatch");
         require(tokenURIs.length <= 10, "Can only mint up to 10 NFTs at a time");
 

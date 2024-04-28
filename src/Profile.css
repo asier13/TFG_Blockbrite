@@ -2,22 +2,26 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden; /* Asegúrate de que no haya desplazamiento en el body */
+  overflow: auto; /* Cambiar a auto para permitir desplazamiento */
 }
+
 #root, .profile {
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: auto; /* Agregar desplazamiento aquí también si es necesario */
 }
+
 .profile {
   color: white;
   padding: 20px;
   font-family: 'Arial', sans-serif;
-  flex: 1; /* Esto asegurará que el div .home ocupe todo el espacio vertical */
+  flex: 1; /* Esto asegurará que el div .profile ocupe todo el espacio vertical */
   background-image: url('./assets/background.png');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
+  overflow: auto; /* Habilita desplazamiento dentro de .profile */
 }
 
 .header {
