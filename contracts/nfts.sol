@@ -11,6 +11,7 @@ contract MyNFT is ERC721URIStorage, ERC721Enumerable, Ownable {
 
     uint256 private _tokenIds;
     mapping(uint256 => uint256) public tokenPrices;
+    mapping(uint256 => bool) public isListed;  // Agregado para rastrear si un NFT está listado
     mapping(uint256 => address) public originalCreators;
     uint256 public constant ROYALTY_PERCENTAGE = 5;
 
@@ -32,6 +33,7 @@ contract MyNFT is ERC721URIStorage, ERC721Enumerable, Ownable {
             _setTokenURI(newItemId, tokenURIs[i]);
             tokenPrices[newItemId] = prices[i];
             originalCreators[newItemId] = recipient;
+            isListed[newItemId] = false; // Inicialmente, el NFT no está listado
 
             emit NFTMinted(newItemId, recipient, tokenURIs[i], prices[i]);
         }
@@ -52,9 +54,11 @@ contract MyNFT is ERC721URIStorage, ERC721Enumerable, Ownable {
 
         _transfer(tokenSeller, msg.sender, tokenId);
         tokenPrices[tokenId] = 0;
+        isListed[tokenId] = false;
 
         emit NFTBought(tokenId, msg.sender, price);
     }
+
     function getTokensForSale() public view returns (uint256[] memory) {
         uint256 totalTokensForSale = 0;
         // Primero calculamos cuántos tokens están en venta para poder crear un array de ese tamaño
@@ -76,24 +80,43 @@ contract MyNFT is ERC721URIStorage, ERC721Enumerable, Ownable {
         return tokensForSale;
     }
 
+    function getTokensForSaleByOwner(address owner) public view returns (uint256[] memory) {
+        uint256 totalOwnedTokens = balanceOf(owner);
+        uint256[] memory temp = new uint256[](totalOwnedTokens);
+        uint256 count = 0;
+
+        for (uint256 i = 0; i < totalOwnedTokens; i++) {
+            uint256 tokenId = tokenOfOwnerByIndex(owner, i);
+            if (tokenPrices[tokenId] > 0 && isListed[tokenId]) { // Asegurarse que el NFT está listado para la venta
+                temp[count] = tokenId;
+                count++;
+            }
+        }
+
+        uint256[] memory tokensForSaleOwner = new uint256[](count);
+        for (uint256 i = 0; i < count; i++) {
+            tokensForSaleOwner[i] = temp[i];
+        }
+
+        return tokensForSaleOwner;
+    }
+
     // Función para listar un NFT para la venta
     function listNFT(uint256 tokenId, uint256 price) public {
         require(ownerOf(tokenId) == msg.sender, "Only the owner can list the NFT");
         require(_exists(tokenId), "Token does not exist");
         require(price > 0, "Price must be greater than zero");
-
+        require(!isListed[tokenId], "NFT already listed");
+        
         // Si el token no tiene precio, permitir al propietario listarlo con el precio que desee.
         // Si tiene precio y es el minteador original, debe listar al precio establecido.
         // Si el propietario actual no es el creador original, puede listar a cualquier precio.
-        if (tokenPrices[tokenId] == 0 || originalCreators[tokenId] != msg.sender) {
-            tokenPrices[tokenId] = price;
-        } else {
-            require(price == tokenPrices[tokenId], "You must list the NFT at the minting price");
-        }
+        tokenPrices[tokenId] = price;
+        isListed[tokenId] = true; // Marcar el NFT como listado
+        require(price == tokenPrices[tokenId], "You must list the NFT at the minting price");
 
         emit NFTListed(tokenId, price);
     }
-
     function supportsInterface(bytes4 interfaceId)
         public
         view

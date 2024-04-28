@@ -2,6 +2,7 @@ require("dotenv").config();
 require("@nomicfoundation/hardhat-toolbox");
 
 const { ALCHEMY_API_KEY, PRIVATE_KEY } = process.env;
+const { ETHERSCAN_API_KEY } = process.env;
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -10,9 +11,12 @@ module.exports = {
   hardhat: {
   },
   sepolia: {
-    url: `https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`, // Utiliza backticks y ${...} para la variable
+    url: `https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`, 
     accounts: [PRIVATE_KEY],
   }
+},
+etherscan: {
+  apiKey: `${ETHERSCAN_API_KEY}`,
 },
   solidity: {
     compilers: [

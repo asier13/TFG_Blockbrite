@@ -1,17 +1,10 @@
-// Dentro de tu componente NFTCard_Owned
 import React, { useState } from 'react';
 
 const NFTCard_Owned = ({ nft, listNftForSale, account }) => {
   const [userPrice, setSalePrice] = useState('');
 
   const handleListForSaleClick = () => {
-    // Si no es el creador original, utiliza el precio introducido por el usuario
-    if (!nft.originalCreator) {
-      listNftForSale(nft.tokenId, userPrice);
-    } else {
-      // Si es el creador original, listará al precio de minteo
-      listNftForSale(nft.tokenId);
-    }
+    listNftForSale(nft.tokenId, userPrice);
   };
 
   return (
@@ -21,16 +14,14 @@ const NFTCard_Owned = ({ nft, listNftForSale, account }) => {
         <h3>{nft.name}</h3>
         <p>{nft.description}</p>
         {account !== nft.originalCreator && (
-        <input
-          type="text"
-          value={userPrice} // Este valor debería ser controlado por el estado del componente
-          onChange={e => setSalePrice(e.target.value)} // Deberías crear la función setSalePrice y el estado correspondiente
-          placeholder="Establece tu precio de venta"
-        />
-      )}
-      <button onClick={handleListForSaleClick}>
-        List
-      </button>
+          <input
+            type="text"
+            value={userPrice}
+            onChange={e => setSalePrice(e.target.value)}
+            placeholder="Establece tu precio de venta"
+          />
+        )}
+        <button onClick={handleListForSaleClick}>List</button>
       </div>
     </div>
   );
