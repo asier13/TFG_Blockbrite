@@ -1,0 +1,46 @@
+body, html {
+    height: 100%;
+    margin: 0;
+  }
+  
+  #root, .marketplace {
+    height: 100%;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: auto; /* Agregar desplazamiento aquí también si es necesario */
+  }
+  
+  .marketplace { /* Assuming .marketplace-page is the main div for your marketplace */
+    color: white;
+    font-family: 'Arial', sans-serif;
+    flex: 1; /* Esto asegurará que el div .profile ocupe todo el espacio vertical */
+    background-image: url('./assets/background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    overflow: auto; /* Habilita desplazamiento dentro de .profile */
+    justify-content: flex-start;
+  }
+
+  .searchbar {
+    padding: 5px 10px;
+    font-size: 14px; 
+    width: 200px; 
+    margin-left: 86.7%;
+    /* Otros estilos según tu diseño */
+  }
+  
+
+  .footer {
+    margin-top: auto; /* Empuja el footer hacia abajo */
+  }
+  
+  .nft-grid {
+    display: flex;
+    flex-wrap: wrap; /* or 'nowrap' if you want a single line scroll */
+    gap: 20px;
+    overflow-y: auto; /* allows vertical scroll */
+    padding: 1rem; /* adds some space around the cards */
+  }
+  

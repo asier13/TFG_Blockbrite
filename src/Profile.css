@@ -7,6 +7,7 @@ html, body {
 
 #root, .profile {
   height: 100%;
+  min-height: 81vh;
   display: flex;
   flex-direction: column;
   overflow: auto; /* Agregar desplazamiento aquí también si es necesario */
@@ -14,7 +15,6 @@ html, body {
 
 .profile {
   color: white;
-  padding: 20px;
   font-family: 'Arial', sans-serif;
   flex: 1; /* Esto asegurará que el div .profile ocupe todo el espacio vertical */
   background-image: url('./assets/background.png');
@@ -31,10 +31,20 @@ html, body {
   padding: 5px;
   background-color: black;
 }
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+  padding: 15px;
+}
+
 .profile h1 {
   margin-bottom: 20px;
 }
-
+.navigation {
+  display: flex;
+}
 .nft-grid {
   display: flex;
   overflow-x: auto;

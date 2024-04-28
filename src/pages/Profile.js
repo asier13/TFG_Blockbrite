@@ -60,6 +60,31 @@ const Profile = () => {
     }
   };
 
+  const delistNft = async (tokenId) => {
+    try {
+      const contract = await getContractInstance();
+      
+      // Llamar a una función del contrato para retirar de la lista, si existe
+      await contract.delistNFT(tokenId);
+      
+     // Actualizar los estados para reflejar que el NFT ha sido retirado de la venta
+     const updatedSale = saleNFTs.filter(nft => nft.tokenId !== tokenId);
+     setSaleNFTs(updatedSale);
+ 
+     const delistedNFT = saleNFTs.find(nft => nft.tokenId === tokenId);
+     if (delistedNFT) {
+       const updatedOwned = [...ownedNFTs, { ...delistedNFT, price: null }]; // Remover el precio porque ya no está en venta
+       setOwnedNFTs(updatedOwned);
+     }
+ 
+
+      alert('NFT delisted successfully!');
+    } catch (error) {
+      console.error('Error delisting NFT:', error);
+      alert('Failed to delist NFT.');
+    }
+  };
+
   useEffect(() => {
     loadNFTs();
   }, [loadNFTs, account]);
@@ -88,7 +113,7 @@ const Profile = () => {
         <h2>NFTs for Sale</h2>
         <div className="nft-grid">
           {saleNFTs.map(nft => (
-            <NFTCard_Sale key={nft.tokenId} nft={nft} />
+            <NFTCard_Sale key={nft.tokenId} nft={nft} delistNft={delistNft} />
           ))}
         </div>
       </section>

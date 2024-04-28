@@ -65,6 +65,31 @@ export const getNFTsOnSale = async (account) => {
   }
 };
 
+// Asumiendo que tu contrato tiene una función que obtiene todos los NFTs listados
+export const getAllNFTsOnSale = async () => {
+  try {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const contract = new ethers.Contract(contractAddress, MyNFTAbi.abi, signer);
+    const tokensForSale = await contract.getTokensForSale(); // Esta es una función hipotética del contrato
+    const nfts = await Promise.all(tokensForSale.map(async (tokenId) => {
+      const price = await contract.tokenPrices(tokenId);
+      const tokenURI = await contract.tokenURI(tokenId);
+      const metadata = await fetchNFTMetadata(tokenURI);
+      return {
+        tokenId: tokenId.toString(),
+        ...metadata,
+        price: ethers.formatEther(price)
+      };
+    }));
+
+    return nfts;
+  } catch (error) {
+    console.error("Error fetching NFTs for sale:", error);
+    return [];
+  }
+};
+
 
 // Función auxiliar para obtener los metadatos del NFT a partir de su URI
 const fetchNFTMetadata = async (tokenURI) => {

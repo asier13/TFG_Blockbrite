@@ -18,6 +18,7 @@ contract MyNFT is ERC721URIStorage, ERC721Enumerable, Ownable {
     event NFTMinted(uint256 indexed tokenId, address indexed recipient, string tokenURI, uint256 price);
     event NFTBought(uint256 indexed tokenId, address indexed newOwner, uint256 price);
     event NFTListed(uint256 indexed tokenId, uint256 price);
+    event NFTDelisted(uint256 indexed tokenId);
 
     constructor() ERC721("MyNFT", "MNFT") {}
 
@@ -117,6 +118,17 @@ contract MyNFT is ERC721URIStorage, ERC721Enumerable, Ownable {
 
         emit NFTListed(tokenId, price);
     }
+
+    function delistNFT(uint256 tokenId) public {
+    require(ownerOf(tokenId) == msg.sender, "Only the owner can delist the NFT");
+    require(isListed[tokenId], "NFT is not listed");
+
+    isListed[tokenId] = false; // Marcar el NFT como no listado
+    tokenPrices[tokenId] = 0; // Opcionalmente, establecer el precio a 0
+
+    emit NFTDelisted(tokenId); // Emitir un evento para el front-end
+}
+
     function supportsInterface(bytes4 interfaceId)
         public
         view
