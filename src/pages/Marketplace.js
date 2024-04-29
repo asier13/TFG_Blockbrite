@@ -10,35 +10,16 @@ import "../Marketplace.css";
 
 const Marketplace = () => {
   const [nftsForSale, setNftsForSale] = useState([]);
-  const [hasMore, setHasMore] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [page, setPage] = useState(0);
 
   useEffect(() => {
+    const fetchNFTs = async () => {
+      const nfts = await getAllNFTsOnSale();
+      setNftsForSale(nfts);
+    };
+
     fetchNFTs();
   }, []);
-
-  const fetchNFTs = async () => {
-    const nfts = await getAllNFTsOnSale();
-    setNftsForSale(nfts);
-  };
-
-  const fetchMoreNFTs = async () => {
-    try {
-        // Simula la carga de la próxima 'página' de NFTs
-        const nextPage = page + 1;
-        const moreNFTs = await getAllNFTsOnSale(nextPage);
-        
-        if (moreNFTs.length === 0) {
-          setHasMore(false);
-        } else {
-          setNftsForSale(prevNFTs => [...prevNFTs, ...moreNFTs]);
-          setPage(nextPage); // Actualiza el número de página
-        }
-      } catch (error) {
-        console.error("Error fetching more NFTs: ", error);
-      }
-    };
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value.toLowerCase());
@@ -62,8 +43,6 @@ const Marketplace = () => {
       <input className="searchbar" type="text" placeholder="Search NFTs..." onChange={handleSearch} />
       <InfiniteScroll
         dataLength={filteredNFTs.length}
-        next={fetchMoreNFTs}
-        hasMore={hasMore}
         
       >
         <div className="nft-grid">

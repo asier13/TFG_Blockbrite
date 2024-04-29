@@ -1,0 +1,97 @@
+body, html {
+    height: 100%;
+    margin: 0;
+  }
+  
+  #root, .create-nft-page {
+    height: 100%;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: auto; /* Agregar desplazamiento aquí también si es necesario */
+  }
+
+.create-nft-page {
+    color: white;
+    font-family: 'Arial', sans-serif;
+    flex: 1; /* Esto asegurará que el div .profile ocupe todo el espacio vertical */
+    background-image: url('./assets/background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    overflow: auto; /* Habilita desplazamiento dentro de .profile */
+    justify-content: flex-start;
+  }
+  
+  .create-nft-page header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+  
+  .create-nft-page main {
+    max-width: 800px; /* Ancho máximo para el formulario */
+    margin: auto;
+    margin-top: 0%;
+    background: white;
+    color: black;
+    font-display: center;
+    padding: 2rem;
+    border-radius: 10px; /* Bordes redondeados para el formulario */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  }
+  .footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: auto; /* Empuja el footer al final de la página */
+  }
+
+  .nft-input-group {
+    margin-bottom: 1rem;
+  }
+  
+  .nft-input-group input,
+  .nft-input-group textarea {
+    width: 100%; /* Ocupa el ancho completo del contenedor */
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px; /* Bordes redondeados para los campos de texto */
+  }
+  
+  .nft-input-group button {
+    background-color: #008cdd; /* Color de fondo para el botón */
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 5px; /* Bordes redondeados para el botón */
+  }
+  
+  .nft-input-group button:hover {
+    background-color: #005f99; /* Color al pasar el ratón */
+  }
+
+  button {
+    background-color: #ff9000; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none; /* No mostrar borde */
+    padding: 10px 20px; /* Espaciado interno */
+    margin: 10px; /* Espaciado externo */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cursor en forma de mano al pasar por encima */
+    transition: background-color 0.3s ease; /* Transición suave del fondo */
+  }
+  
+  button:hover {
+    background-color: #e57700; /* Color de fondo al pasar el mouse */
+  }
+  
+  /* Especificar estilos para botones al lado del input file para alinearlos verticalmente */
+  .file-input-container button {
+    vertical-align: middle; /* Alineación vertical con el input de archivo */
+  }
+  
+  

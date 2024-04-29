@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { pinFileToIPFS } from '../utils/ipfs';
 import { useMintNFT } from '../hooks/useMintNFT';
+import wallet from '../assets/wallet.png';
+import logo from '../assets/logo.png';
+import "../CreateNFT.css"
 
 const CreateNFT = () => {
   const [nftData, setNftData] = useState([{ name: '', description: '', price: '', image: null }]);
@@ -75,8 +78,13 @@ const CreateNFT = () => {
   return (
     <div className="create-nft-page">
       <header className="header">
-        <Link to="/">Home</Link>
-        <Link to="/marketplace">Marketplace</Link>
+        <img src={logo} alt="Blockbrite Logo" className="logo" />
+        <nav className="navigation">
+          <Link to="/" className="nav-link">Inicio</Link>
+          <Link to="/marketplace" className="nav-link active">Marketplace</Link>
+          <Link to="/create-nft" className="nav-link">Crear NFT</Link>
+          <Link to="/profile"><img src={wallet} alt="wallet Logo" className="wallet"/></Link>
+        </nav>
       </header>
       <main>
         <h1>Create Multiple NFTs</h1>

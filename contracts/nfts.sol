@@ -62,24 +62,23 @@ contract MyNFT is ERC721URIStorage, ERC721Enumerable, Ownable {
 
     function getTokensForSale() public view returns (uint256[] memory) {
         uint256 totalTokensForSale = 0;
-        // Primero calculamos cuántos tokens están en venta para poder crear un array de ese tamaño
         for (uint256 i = 1; i <= _tokenIds; i++) {
-            if (tokenPrices[i] > 0) {
+            if (tokenPrices[i] > 0 && isListed[i]) {
                 totalTokensForSale++;
             }
         }
 
-        // Ahora que sabemos cuántos tokens están en venta, podemos crear el array y llenarlo
         uint256[] memory tokensForSale = new uint256[](totalTokensForSale);
         uint256 currentIndex = 0;
         for (uint256 i = 1; i <= _tokenIds; i++) {
-            if (tokenPrices[i] > 0) {
+            if (tokenPrices[i] > 0 && isListed[i]) {
                 tokensForSale[currentIndex] = i;
                 currentIndex++;
             }
         }
         return tokensForSale;
     }
+
 
     function getTokensForSaleByOwner(address owner) public view returns (uint256[] memory) {
         uint256 totalOwnedTokens = balanceOf(owner);
