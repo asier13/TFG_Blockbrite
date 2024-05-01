@@ -4,7 +4,7 @@ import contractAddress from '../contractAddress';
 const ethers = require('ethers');
 
 export const useMintNFT = () => {
-  const mintMultipleNFTs = async (tokenURIs, prices) => {
+  const mintMultipleNFTs = async (tokenURIs, prices, categories) => {
     if (!window.ethereum) {
       throw new Error('No Ethereum browser extension detected');
     }
@@ -24,7 +24,7 @@ export const useMintNFT = () => {
       const pricesInWei = prices.map((price) => ethers.parseEther(price.toString()));
 
       // Llamar a la función del contrato para mintear múltiples NFTs
-      const transaction = await nftContract.mintMultipleNFTs(signer.getAddress(), tokenURIs, pricesInWei);
+      const transaction = await nftContract.mintMultipleNFTs(signer.getAddress(), tokenURIs, pricesInWei, categories);
       // Esperar a que la transacción se confirme
       await transaction.wait();
       

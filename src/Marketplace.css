@@ -28,9 +28,14 @@ body, html {
     font-size: 14px; 
     width: 200px; 
     margin-left: 86.7%;
-    /* Otros estilos según tu diseño */
   }
   
+  .category-select{
+    padding: 5px 10px;
+    font-size: 14px; 
+    width: 200px; 
+    margin-left: 88.1%;
+  }
 
   .footer {
     margin-top: auto; /* Empuja el footer hacia abajo */

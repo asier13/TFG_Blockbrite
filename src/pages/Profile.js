@@ -21,45 +21,50 @@ const Profile = () => {
   const { account } = useMetaMask();
   const [ownedNFTs, setOwnedNFTs] = useState([]);
   const [saleNFTs, setSaleNFTs] = useState([]);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const loadNFTs = useCallback(async () => {
     if (account) {
-      try {
-        const owned = await getOwnedNFTs(account);
-        const onSale = await getNFTsOnSale(account);
-        setOwnedNFTs(owned);
-        setSaleNFTs(onSale);
-      } catch (error) {
-        console.error('Error loading NFTs:', error);
-      }
+      const owned = await getOwnedNFTs(account);
+      const onSale = await getNFTsOnSale(account);
+
+      setOwnedNFTs(owned);
+      setSaleNFTs(onSale);
+      setRefreshKey(oldKey => oldKey + 1);  // Actualiza la key para forzar re-renderización
     }
   }, [account]);
+  
 
   const listNftForSale = async (tokenId, userPrice) => {
     try {
       const contract = await getContractInstance();
       const mintingPrice = await contract.tokenPrices(tokenId);
       const originalCreator = await contract.originalCreators(tokenId);
-      const accountAddress = account; 
-
-      const salePrice = accountAddress === originalCreator ? mintingPrice : ethers.parseUnits(userPrice, 'ether');
-
+      const accountAddress = account;
+      
+      // Asegúrate de que userPrice es un string y no está vacío
+      userPrice = typeof userPrice === 'string' ? userPrice.trim() : '';
+      
+      const salePrice = accountAddress === originalCreator ? mintingPrice : 
+                        userPrice !== '' ? ethers.parseUnits(userPrice, 'ether') : mintingPrice;
+      
       await contract.listNFT(tokenId, salePrice);
       alert('NFT is now for sale!');
-
-      // Actualiza directamente los estados sin recargar todos los NFTs
+      
+      // Update state without reloading all NFTs
       const updatedOwned = ownedNFTs.filter(nft => nft.tokenId !== tokenId);
       setOwnedNFTs(updatedOwned);
-
+      
       const newNFT = { ...ownedNFTs.find(nft => nft.tokenId === tokenId), price: ethers.formatUnits(salePrice, 'ether') };
       setSaleNFTs(prevSale => [...prevSale, newNFT]);
-
+      refresh();
     } catch (error) {
       console.error('Error listing NFT for sale:', error);
       alert('There was an error listing your NFT for sale.');
     }
   };
-
+  
+  
   const delistNft = async (tokenId) => {
     try {
       const contract = await getContractInstance();
@@ -76,7 +81,7 @@ const Profile = () => {
        const updatedOwned = [...ownedNFTs, { ...delistedNFT, price: null }]; // Remover el precio porque ya no está en venta
        setOwnedNFTs(updatedOwned);
      }
- 
+     refresh();
 
       alert('NFT delisted successfully!');
     } catch (error) {
@@ -85,12 +90,14 @@ const Profile = () => {
     }
   };
 
+  const refresh = () => setRefreshKey(oldKey => oldKey + 1);
+
   useEffect(() => {
     loadNFTs();
   }, [loadNFTs, account]);
 
   return (
-    <div className="profile">
+    <div className="profile" key={refreshKey}>
       <header className="header">
         <img src={logo} alt="Blockbrite Logo" className="logo" />
         <nav className="navigation">
@@ -106,7 +113,7 @@ const Profile = () => {
         <div className="nft-grid">
           {ownedNFTs.map(nft => (
             <NFTCard_Owned key={nft.tokenId} nft={nft} listNftForSale={listNftForSale} account={account} />
-          ))}
+        ))}
         </div>
       </section>
       <section>

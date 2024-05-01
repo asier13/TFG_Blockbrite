@@ -56,6 +56,7 @@ const CreateNFT = () => {
           name: nft.name,
           description: nft.description,
           image: imageUrl,
+          category: nft.category  // Asegúrate de que cada NFT incluya una categoría
         };
 
         // Subir metadatos a IPFS
@@ -67,7 +68,7 @@ const CreateNFT = () => {
       }
 
       // Mintear múltiples NFTs
-      await mintMultipleNFTs(metadataUrls, prices);
+      await mintMultipleNFTs(metadataUrls, prices, nftData.map(nft => nft.category));
       alert('NFTs minted successfully!');
     } catch (error) {
       console.error('Failed to mint NFTs:', error);
@@ -110,6 +111,14 @@ const CreateNFT = () => {
               value={nft.price}
               onChange={e => handleInputChange(index, e)}
             />
+            <select name="category" onChange={e => handleInputChange(index, e)} value={nft.category}>
+              <option value="">Select Category</option>
+              <option value="Real State">Real State</option>
+              <option value="Sports">Sports</option>
+              <option value="Art">Art</option>
+              <option value="Events">Events</option>
+              <option value="Others">Others</option>
+            </select>
             <input
               type="file"
               name="image"

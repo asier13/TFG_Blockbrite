@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import NFTCard from '../components/NFTCard_Sale_Market';
 import { getAllNFTsOnSale } from '../utils/nftHelpers';
 import { Link } from 'react-router-dom';
-import InfiniteScroll from 'react-infinite-scroll-component'; // Asegúrate de haber instalado   
+import InfiniteScroll from 'react-infinite-scroll-component'; 
 import wallet from '../assets/wallet.png';
 import logo from '../assets/logo.png';
 import "../Marketplace.css";
@@ -11,6 +11,7 @@ import "../Marketplace.css";
 const Marketplace = () => {
   const [nftsForSale, setNftsForSale] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');  // Estado para la categoría seleccionada
 
   useEffect(() => {
     const fetchNFTs = async () => {
@@ -25,9 +26,14 @@ const Marketplace = () => {
     setSearchTerm(event.target.value.toLowerCase());
   };
 
-  const filteredNFTs = searchTerm
-    ? nftsForSale.filter(nft => nft.name.toLowerCase().includes(searchTerm))
-    : nftsForSale;
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);  // Actualizar la categoría seleccionada
+  };
+
+  const filteredNFTs = nftsForSale.filter(nft => 
+    (nft.name.toLowerCase().includes(searchTerm) && 
+    (selectedCategory === '' || nft.category === selectedCategory))  // Filtrar por nombre y categoría
+  );
 
   return (
     <div className="marketplace">
@@ -41,6 +47,14 @@ const Marketplace = () => {
         </nav>
       </header>
       <input className="searchbar" type="text" placeholder="Search NFTs..." onChange={handleSearch} />
+      <select className="category-select" onChange={handleCategoryChange} value={selectedCategory}>
+        <option value="">All Categories</option>
+        <option value="Real State">Real State</option>
+        <option value="Sports">Sports</option>
+        <option value="Art">Art</option>
+        <option value="Events">Events</option>
+        <option value="Others">Others</option>
+      </select>
       <InfiniteScroll
         dataLength={filteredNFTs.length}
         

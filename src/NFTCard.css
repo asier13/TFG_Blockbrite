@@ -1,24 +1,35 @@
 .nft-card {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    transition: transform 0.2s ease;
-  }
-  
+  display: flex;
+  background-color: white;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  margin: 10px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 0px 10px #ccc;
+  overflow: hidden;
+}
+
+.nft-info {
+  flex: 1;
+  padding: 10px;
+  overflow: auto;
+}
+
+.nft-image {
+  width: 100%;
+  object-fit: cover;
+  height: 200px; 
+}
+
+.button-container {
+  padding: 10px;
+  text-align: center; /* Centra el botón si lo deseas */
+}
   .nft-card:hover {
     transform: translateY(-5px);
   }
   
-  .nft-image {
-    width: 100%;
-    object-fit: cover;
-    height: 200px; /* o la altura que prefieras */
-  }
-  
-  .nft-info {
-    padding: 15px;
-  }
   
   .nft-info h3 {
     margin-top: 0;

@@ -6,13 +6,14 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
-contract MyNFT is ERC721URIStorage, ERC721Enumerable, Ownable {
+contract Blockbrite is ERC721URIStorage, ERC721Enumerable, Ownable {
     using SafeMath for uint256;
 
     uint256 private _tokenIds;
     mapping(uint256 => uint256) public tokenPrices;
     mapping(uint256 => bool) public isListed;  // Agregado para rastrear si un NFT está listado
     mapping(uint256 => address) public originalCreators;
+    mapping(uint256 => string) public tokenCategories;
     uint256 public constant ROYALTY_PERCENTAGE = 5;
 
     event NFTMinted(uint256 indexed tokenId, address indexed recipient, string tokenURI, uint256 price);
@@ -20,10 +21,10 @@ contract MyNFT is ERC721URIStorage, ERC721Enumerable, Ownable {
     event NFTListed(uint256 indexed tokenId, uint256 price);
     event NFTDelisted(uint256 indexed tokenId);
 
-    constructor() ERC721("MyNFT", "MNFT") {}
+    constructor() ERC721("Blockbrite", "MNFT") {}
 
-    function mintMultipleNFTs(address recipient, string[] memory tokenURIs, uint256[] memory prices) public {
-        require(tokenURIs.length == prices.length, "URIs and prices length mismatch");
+    function mintMultipleNFTs(address recipient, string[] memory tokenURIs, uint256[] memory prices, string[] memory categories) public {
+        require(tokenURIs.length == prices.length && tokenURIs.length == categories.length, "Input arrays must have the same length");
         require(tokenURIs.length <= 10, "Can only mint up to 10 NFTs at a time");
 
         for (uint256 i = 0; i < tokenURIs.length; i++) {
@@ -33,12 +34,33 @@ contract MyNFT is ERC721URIStorage, ERC721Enumerable, Ownable {
             _mint(recipient, newItemId);
             _setTokenURI(newItemId, tokenURIs[i]);
             tokenPrices[newItemId] = prices[i];
+            tokenCategories[newItemId] = categories[i];
             originalCreators[newItemId] = recipient;
             isListed[newItemId] = false; // Inicialmente, el NFT no está listado
 
             emit NFTMinted(newItemId, recipient, tokenURIs[i], prices[i]);
         }
     }
+
+    function getTokensForSaleByCategory(string memory category) public view returns (uint256[] memory) {
+    uint256 totalTokensForCategory = 0;
+    for (uint256 i = 1; i <= _tokenIds; i++) {
+        if (isListed[i] && keccak256(abi.encodePacked(tokenCategories[i])) == keccak256(abi.encodePacked(category))) {
+            totalTokensForCategory++;
+        }
+    }
+
+    uint256[] memory tokensForSaleCategory = new uint256[](totalTokensForCategory);
+    uint256 currentIndex = 0;
+    for (uint256 i = 1; i <= _tokenIds; i++) {
+        if (isListed[i] && keccak256(abi.encodePacked(tokenCategories[i])) == keccak256(abi.encodePacked(category))) {
+            tokensForSaleCategory[currentIndex] = i;
+            currentIndex++;
+        }
+    }
+    return tokensForSaleCategory;
+}
+
 
     function buyNFT(uint256 tokenId) public payable {
         uint256 price = tokenPrices[tokenId];

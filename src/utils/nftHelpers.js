@@ -8,20 +8,24 @@ export const getOwnedNFTs = async () => {
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
     const contract = new ethers.Contract(contractAddress, MyNFTAbi.abi, signer);
-    const account = await signer.getAddress(); // Corrección aquí
+    const account = await signer.getAddress(); // Asegúrate de que esta dirección es correcta y está en minúsculas
     const totalOwned = await contract.balanceOf(account);
-    let ownedNFTs = [];
+    let ownedNFTs = [];    
 
     for (let i = 0; i < totalOwned; i++) {
       const tokenId = await contract.tokenOfOwnerByIndex(account, i);
       const isListed = await contract.isListed(tokenId);
-
       if (!isListed) {
         const tokenURI = await contract.tokenURI(tokenId);
         const metadata = await fetchNFTMetadata(tokenURI);
+        const originalCreator = await contract.originalCreators(tokenId); // Obtener el creador original aquí
+        const mintPrice = await contract.tokenPrices(tokenId); // Convertir el precio de Wei a Ether
+
         ownedNFTs.push({
           tokenId: tokenId.toString(),
+          originalCreator, // Añadir el creador al objeto NFT
           ...metadata,
+          price: ethers.formatEther(mintPrice)
         });
       }
     }
@@ -32,6 +36,7 @@ export const getOwnedNFTs = async () => {
     return [];
   }
 };
+
 
 
 
