@@ -9,11 +9,11 @@ async function main() {
 
   console.log("Account balance:", accountBalance.toString());
 
-  const MyNFT = await ethers.getContractFactory("MyNFT");
-  const myNFT = await MyNFT.deploy();
-  await myNFT.waitForDeployment()
+  const Blockbrite = await ethers.getContractFactory("Blockbrite");
+  const blockb = await Blockbrite.deploy();
+  await blockb.waitForDeployment()
 
-  console.log("MyNFT contract deployed to:", myNFT.target);
+  console.log("MyNFT contract deployed to:", blockb.target);
 }
 
 main()

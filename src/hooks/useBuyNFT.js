@@ -1,4 +1,4 @@
-import MyNFTAbi from '../abis/MyNFT.json';
+import MyNFTAbi from '../abis/Blockbrite.json';
 import contractAddress from '../contractAddress';
 const ethers = require('ethers');
 

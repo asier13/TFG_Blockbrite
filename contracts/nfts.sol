@@ -11,7 +11,7 @@ contract Blockbrite is ERC721URIStorage, ERC721Enumerable, Ownable {
 
     uint256 private _tokenIds;
     mapping(uint256 => uint256) public tokenPrices;
-    mapping(uint256 => bool) public isListed;  // Agregado para rastrear si un NFT está listado
+    mapping(uint256 => bool) public isListed;
     mapping(uint256 => address) public originalCreators;
     mapping(uint256 => string) public tokenCategories;
     uint256 public constant ROYALTY_PERCENTAGE = 5;
@@ -36,7 +36,7 @@ contract Blockbrite is ERC721URIStorage, ERC721Enumerable, Ownable {
             tokenPrices[newItemId] = prices[i];
             tokenCategories[newItemId] = categories[i];
             originalCreators[newItemId] = recipient;
-            isListed[newItemId] = false; // Inicialmente, el NFT no está listado
+            isListed[newItemId] = false; // El NFT no está listado de inicio
 
             emit NFTMinted(newItemId, recipient, tokenURIs[i], prices[i]);
         }
@@ -109,7 +109,7 @@ contract Blockbrite is ERC721URIStorage, ERC721Enumerable, Ownable {
 
         for (uint256 i = 0; i < totalOwnedTokens; i++) {
             uint256 tokenId = tokenOfOwnerByIndex(owner, i);
-            if (tokenPrices[tokenId] > 0 && isListed[tokenId]) { // Asegurarse que el NFT está listado para la venta
+            if (tokenPrices[tokenId] > 0 && isListed[tokenId]) {
                 temp[count] = tokenId;
                 count++;
             }
@@ -140,15 +140,22 @@ contract Blockbrite is ERC721URIStorage, ERC721Enumerable, Ownable {
         emit NFTListed(tokenId, price);
     }
 
-    function delistNFT(uint256 tokenId) public {
+function delistNFT(uint256 tokenId) public {
     require(ownerOf(tokenId) == msg.sender, "Only the owner can delist the NFT");
     require(isListed[tokenId], "NFT is not listed");
+    address originalCreator = originalCreators[tokenId];
+    uint256 originalPrice = tokenPrices[tokenId];
+    
+    if (originalCreator == msg.sender) {
+        tokenPrices[tokenId] = originalPrice;
+    } else {
+        tokenPrices[tokenId] = 0;
+    }
 
     isListed[tokenId] = false; // Marcar el NFT como no listado
-    tokenPrices[tokenId] = 0; // Opcionalmente, establecer el precio a 0
-
-    emit NFTDelisted(tokenId); // Emitir un evento para el front-end
+    emit NFTDelisted(tokenId); 
 }
+
 
     function supportsInterface(bytes4 interfaceId)
         public
@@ -183,7 +190,6 @@ contract Blockbrite is ERC721URIStorage, ERC721Enumerable, Ownable {
         return super.tokenURI(tokenId);
     }
 
-    // Devuelve el total de tokens utilizando ERC721Enumerable
     function totalSupply()
         public view override(ERC721Enumerable)
         returns (uint256)

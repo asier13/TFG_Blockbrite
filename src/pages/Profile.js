@@ -4,7 +4,7 @@ import useMetaMask from '../hooks/useMetaMask';
 import NFTCard_Sale from '../components/NFTCard_Sale';
 import NFTCard_Owned from '../components/NFTCard_Owned';
 import { getOwnedNFTs, getNFTsOnSale } from '../utils/nftHelpers';
-import MyNFTAbi from '../abis/MyNFT.json';
+import MyNFTAbi from '../abis/Blockbrite.json';
 import contractAddress from '../contractAddress';
 import wallet from '../assets/wallet.png';
 import logo from '../assets/logo.png';
@@ -69,26 +69,35 @@ const Profile = () => {
     try {
       const contract = await getContractInstance();
       
-      // Llamar a una función del contrato para retirar de la lista, si existe
+      // Llamar a una función del contrato para retirar de la lista
       await contract.delistNFT(tokenId);
       
-     // Actualizar los estados para reflejar que el NFT ha sido retirado de la venta
-     const updatedSale = saleNFTs.filter(nft => nft.tokenId !== tokenId);
-     setSaleNFTs(updatedSale);
- 
-     const delistedNFT = saleNFTs.find(nft => nft.tokenId === tokenId);
-     if (delistedNFT) {
-       const updatedOwned = [...ownedNFTs, { ...delistedNFT, price: null }]; // Remover el precio porque ya no está en venta
-       setOwnedNFTs(updatedOwned);
-     }
-     refresh();
-
+      // Recuperar información adicional necesaria para actualizar el estado correctamente
+      const originalCreator = await contract.originalCreators(tokenId);
+      const mintingPrice = await contract.tokenPrices(tokenId);
+      const accountAddress = account;
+  
+      // Determinar el precio basado en si el deslistador es el creador original
+      const resetPrice = accountAddress === originalCreator ? ethers.formatUnits(mintingPrice, 'ether') : null;
+  
+      // Actualizar los estados para reflejar que el NFT ha sido retirado de la venta
+      const updatedSale = saleNFTs.filter(nft => nft.tokenId !== tokenId);
+      setSaleNFTs(updatedSale);
+  
+      const delistedNFT = saleNFTs.find(nft => nft.tokenId === tokenId);
+      if (delistedNFT) {
+        const updatedOwned = [...ownedNFTs, { ...delistedNFT, price: resetPrice }]; // Asignar el precio de minteo o null
+        setOwnedNFTs(updatedOwned);
+      }
+      refresh();
       alert('NFT delisted successfully!');
     } catch (error) {
       console.error('Error delisting NFT:', error);
       alert('Failed to delist NFT.');
     }
   };
+  
+
 
   const refresh = () => setRefreshKey(oldKey => oldKey + 1);
 
