@@ -30,7 +30,7 @@ const Profile = () => {
 
       setOwnedNFTs(owned);
       setSaleNFTs(onSale);
-      setRefreshKey(oldKey => oldKey + 1);  // Actualiza la key para forzar re-renderización
+      setRefreshKey(oldKey => oldKey + 1); 
     }
   }, [account]);
   
@@ -42,7 +42,6 @@ const Profile = () => {
       const originalCreator = await contract.originalCreators(tokenId);
       const accountAddress = account;
       
-      // Asegúrate de que userPrice es un string y no está vacío
       userPrice = typeof userPrice === 'string' ? userPrice.trim() : '';
       
       const salePrice = accountAddress === originalCreator ? mintingPrice : 
@@ -51,7 +50,7 @@ const Profile = () => {
       await contract.listNFT(tokenId, salePrice);
       alert('NFT is now for sale!');
       
-      // Update state without reloading all NFTs
+
       const updatedOwned = ownedNFTs.filter(nft => nft.tokenId !== tokenId);
       setOwnedNFTs(updatedOwned);
       
@@ -69,24 +68,20 @@ const Profile = () => {
     try {
       const contract = await getContractInstance();
       
-      // Llamar a una función del contrato para retirar de la lista
       await contract.delistNFT(tokenId);
       
-      // Recuperar información adicional necesaria para actualizar el estado correctamente
       const originalCreator = await contract.originalCreators(tokenId);
       const mintingPrice = await contract.tokenPrices(tokenId);
       const accountAddress = account;
   
-      // Determinar el precio basado en si el deslistador es el creador original
       const resetPrice = accountAddress === originalCreator ? ethers.formatUnits(mintingPrice, 'ether') : null;
   
-      // Actualizar los estados para reflejar que el NFT ha sido retirado de la venta
       const updatedSale = saleNFTs.filter(nft => nft.tokenId !== tokenId);
       setSaleNFTs(updatedSale);
   
       const delistedNFT = saleNFTs.find(nft => nft.tokenId === tokenId);
       if (delistedNFT) {
-        const updatedOwned = [...ownedNFTs, { ...delistedNFT, price: resetPrice }]; // Asignar el precio de minteo o null
+        const updatedOwned = [...ownedNFTs, { ...delistedNFT, price: resetPrice }];
         setOwnedNFTs(updatedOwned);
       }
       refresh();

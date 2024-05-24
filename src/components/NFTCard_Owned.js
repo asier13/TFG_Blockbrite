@@ -8,7 +8,7 @@ const NFTCard_Owned = React.memo(({ nft, listNftForSale, account }) => {
 
     const handleListForSaleClick = () => {
         if (isOriginalCreator) {
-            listNftForSale(nft.tokenId, nft.price);  // Considerar usar el precio preestablecido si es necesario
+            listNftForSale(nft.tokenId, nft.price);
         } else {
             listNftForSale(nft.tokenId, userPrice);
         }

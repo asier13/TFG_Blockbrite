@@ -11,7 +11,7 @@ import "../Marketplace.css";
 const Marketplace = () => {
   const [nftsForSale, setNftsForSale] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');  // Estado para la categoría seleccionada
+  const [selectedCategory, setSelectedCategory] = useState(''); 
 
   useEffect(() => {
     const fetchNFTs = async () => {
@@ -27,12 +27,12 @@ const Marketplace = () => {
   };
 
   const handleCategoryChange = (event) => {
-    setSelectedCategory(event.target.value);  // Actualizar la categoría seleccionada
+    setSelectedCategory(event.target.value);  
   };
 
   const filteredNFTs = nftsForSale.filter(nft => 
     (nft.name.toLowerCase().includes(searchTerm) && 
-    (selectedCategory === '' || nft.category === selectedCategory))  // Filtrar por nombre y categoría
+    (selectedCategory === '' || nft.category === selectedCategory)) 
   );
 
   return (

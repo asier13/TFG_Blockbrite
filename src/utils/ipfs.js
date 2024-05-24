@@ -18,7 +18,7 @@ const pinFileToIPFS = async (file) => {
     });
   
     if (!res.ok) {
-        const errorBody = await res.text(); // Intenta obtener más detalles del cuerpo de la respuesta de error
+        const errorBody = await res.text(); 
         throw new Error(`Error al subir el archivo a IPFS: ${res.statusText}. Detalles: ${errorBody}`);
     }
   

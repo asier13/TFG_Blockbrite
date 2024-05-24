@@ -152,7 +152,7 @@ function delistNFT(uint256 tokenId) public {
         tokenPrices[tokenId] = 0;
     }
 
-    isListed[tokenId] = false; // Marcar el NFT como no listado
+    isListed[tokenId] = false;
     emit NFTDelisted(tokenId); 
 }
 

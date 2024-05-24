@@ -56,7 +56,7 @@ const CreateNFT = () => {
           name: nft.name,
           description: nft.description,
           image: imageUrl,
-          category: nft.category  // Asegúrate de que cada NFT incluya una categoría
+          category: nft.category  
         };
 
         // Subir metadatos a IPFS

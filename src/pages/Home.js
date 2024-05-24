@@ -1,9 +1,9 @@
 // Home.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../Home.css'; // Asegúrate de que la ruta al archivo CSS es correcta
-import logo from '../assets/logo.png'; // Asegúrate de que la ruta al logo es correcta
-import zeusImage from '../assets/zeus.png'; // Asegúrate de que la ruta a la imagen de Zeus es correcta
+import '../Home.css'; 
+import logo from '../assets/logo.png'; 
+import zeusImage from '../assets/zeus.png';
 import wallet from '../assets/wallet.png'; 
 import Footer from '../components/Footer';
 
@@ -33,7 +33,7 @@ const Home = () => {
           </div>
         </div> 
       </div>
-      <Footer /> {/* Componente footer al final */}
+      <Footer />
     </>
   );
 };

@@ -24,7 +24,7 @@
 
 .button-container {
   padding: 10px;
-  text-align: center; /* Centra el botón si lo deseas */
+  text-align: center; 
 }
   .nft-card:hover {
     transform: translateY(-5px);

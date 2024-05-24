@@ -1,14 +1,13 @@
 import React from 'react';
 import '../NFTCard.css';
 
-// Asumiendo que tienes una función que maneja la compra en tus hooks o utils
 import { useBuyNFT } from '../hooks/useBuyNFT';
 
 const NFTCard_Sale_Market = ({ nft }) => {
   const { buyNFT } = useBuyNFT();
 
   const handleBuyClick = async () => {
-    await buyNFT(nft.tokenId, nft.price); // Asegúrate de pasar el precio correctamente
+    await buyNFT(nft.tokenId, nft.price);
   };
 
   return (

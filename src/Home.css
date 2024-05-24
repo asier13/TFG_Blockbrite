@@ -2,7 +2,7 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Asegúrate de que no haya desplazamiento en el body */
+    overflow: hidden; 
   }
   
   #root, .home {
@@ -19,27 +19,27 @@ html, body {
   .home {
     color: white;
     font-family: 'Arial', sans-serif;
-    flex: 1; /* Esto asegurará que el div .home ocupe todo el espacio vertical */
+    flex: 1;
     background-image: url('./assets/background.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
   }
   
-  /* Estilos del footer */
+
   .footer {
     background: #333;
     color: white;
     text-align: center;
     padding: 10px 0;
-    margin-top: auto; /* Empuja el footer al final de la página */
+    margin-top: auto; 
   }
 
   .logo {
-    width: 70px; /* Ajusta esto según el tamaño de tu logo */
+    width: 70px; 
   }
   .wallet {
-    width: 40px; /* Ajusta esto según el tamaño de tu logo */
+    width: 40px; 
   }
   .navigation {
     display: flex;
@@ -65,18 +65,18 @@ html, body {
   }
   
   .zeus-image img {
-    width: 100%; /* O el tamaño que prefieras */
-    max-width: 600px; /* Ajusta según el tamaño deseado */
+    width: 100%; 
+    max-width: 600px; 
     height: auto;
   }
   
   .main-content {
     flex: 2;
-    padding: 0 5rem; /* Ajusta el espacio alrededor del contenido */
+    padding: 0 5rem; 
   }
   
   .main-content h1 {
-    font-size: 3rem; /* Ajusta el tamaño del título según sea necesario */
+    font-size: 3rem; 
     margin-bottom: 2rem;
   }
   
@@ -92,11 +92,11 @@ html, body {
   }
   
   .button-group .explore {
-    background-color: #555; /* Ajusta el color */
+    background-color: #555; 
   }
   
   .button-group .create {
-    background-color: #f80; /* Ajusta el color */
+    background-color: #f80;
   }
   
   .button-group .btn:hover {

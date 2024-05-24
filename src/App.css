@@ -1,24 +1,19 @@
-/* App.css */
-
 .card-image {
-    width: 100%; /* Asegúrate de que la imagen se ajuste al ancho de su contenedor */
-    height: auto; /* Mantén la relación de aspecto de la imagen */
-    max-width: 200px; /* Establece un ancho máximo para la imagen */
-    max-height: 200px; /* Opcional: Establece una altura máxima para la imagen si es necesario */
-    display: block; /* Evita que la imagen tenga espacio extra en la parte inferior */
-    margin: 0 auto; /* Centra la imagen si es más pequeña que el ancho del contenedor */
+    width: 100%; 
+    height: auto; 
+    max-width: 200px; 
+    max-height: 200px; 
+    display: block; 
+    margin: 0 auto; 
   }
   
-  /* Puedes agregar estilos adicionales para la presentación de las tarjetas aquí */
   .card {
-    /* ... otros estilos para tu tarjeta ... */
-    text-align: center; /* Si quieres centrar el texto dentro de la tarjeta */
-    padding: 1em; /* Añade algo de espacio alrededor del contenido de la tarjeta */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Opcional: añade una sombra para un efecto elevado */
-    border-radius: 10px; /* Opcional: bordes redondeados para la tarjeta */
-    margin: 1em; /* Añade margen alrededor de la tarjeta */
-    background-color: #fff; /* Opcional: para tarjetas con fondo blanco */
+    text-align: center;
+    padding: 1em; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px; 
+    margin: 1em; 
+    background-color: #fff; 
   }
   
-  /* ... cualquier otro estilo global o de componente que necesites ... */
   

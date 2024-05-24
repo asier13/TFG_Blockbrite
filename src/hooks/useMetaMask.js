@@ -10,7 +10,6 @@ const useMetaMask = () => {
   const connectMetaMask = async () => {
     setIsConnecting(true);
     try {
-      // Usar ethers para solicitar cuentas
       await window.ethereum.request({ method: 'eth_requestAccounts' });
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = provider.getSigner();
@@ -39,7 +38,6 @@ const useMetaMask = () => {
         }
       }).catch(setError);
 
-      // Escuchar cambios en la cuenta
       window.ethereum.on('accountsChanged', (accounts) => {
         if (accounts.length > 0) {
           setAccount(accounts[0]);
@@ -48,12 +46,10 @@ const useMetaMask = () => {
         }
       });
 
-      // Escuchar cambios en la red
       window.ethereum.on('chainChanged', (_chainId) => window.location.reload());
     }
 
     return () => {
-      // Limpiar listeners al desmontar el componente
       window.ethereum.removeListener('accountsChanged', connectMetaMask);
       window.ethereum.removeListener('chainChanged', (_chainId) => window.location.reload());
     };

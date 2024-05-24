@@ -8,7 +8,7 @@ export const getOwnedNFTs = async () => {
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
     const contract = new ethers.Contract(contractAddress, MyNFTAbi.abi, signer);
-    const account = await signer.getAddress(); // Asegúrate de que esta dirección es correcta y está en minúsculas
+    const account = await signer.getAddress(); 
     const totalOwned = await contract.balanceOf(account);
     let ownedNFTs = [];    
 
@@ -23,7 +23,7 @@ export const getOwnedNFTs = async () => {
 
         ownedNFTs.push({
           tokenId: tokenId.toString(),
-          originalCreator, // Añadir el creador al objeto NFT
+          originalCreator, 
           ...metadata,
           price: ethers.formatEther(mintPrice)
         });
@@ -70,13 +70,12 @@ export const getNFTsOnSale = async (account) => {
   }
 };
 
-// Asumiendo que tu contrato tiene una función que obtiene todos los NFTs listados
 export const getAllNFTsOnSale = async () => {
   try {
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
     const contract = new ethers.Contract(contractAddress, MyNFTAbi.abi, signer);
-    const tokensForSale = await contract.getTokensForSale(); // Esta es una función hipotética del contrato
+    const tokensForSale = await contract.getTokensForSale(); 
     const nfts = await Promise.all(tokensForSale.map(async (tokenId) => {
       const price = await contract.tokenPrices(tokenId);
       const tokenURI = await contract.tokenURI(tokenId);
