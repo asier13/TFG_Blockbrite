@@ -19,7 +19,7 @@ const Faucet = () => {
     setMessage('');
 
     try {
-      const response = await axios.post('/api/faucet', { address: account });
+      const response = await axios.post('/api/faucet', { address: account }, { timeout: 60000 }); // Aumenta el tiempo de espera a 60 segundos
       setMessage(`ETH enviado exitosamente. Tx Hash: ${response.data.txHash}`);
     } catch (error) {
       setMessage('Error al solicitar ETH');
@@ -41,11 +41,6 @@ const Faucet = () => {
         </nav>
       </header>
       <h1>Solicitar ETH de Prueba</h1>
-      {account && typeof account === 'string' ? (
-        <p>Conectado a la cuenta: {account}</p>
-      ) : (
-        <button onClick={connectMetaMask}>Conectar MetaMask</button>
-      )}
       <button onClick={requestEth} disabled={loading || !account}>
         {loading ? 'Solicitando...' : 'Solicitar 0.1 ETH'}
       </button>
