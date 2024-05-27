@@ -1,4 +1,3 @@
-// src/pages/Faucet.js
 import { Link } from 'react-router-dom';
 import wallet from '../assets/wallet.png';
 import logo from '../assets/logo.png';
@@ -42,13 +41,13 @@ const Faucet = () => {
         </nav>
       </header>
       <h1>Solicitar ETH de Prueba</h1>
-      {account ? (
+      {account && typeof account === 'string' ? (
         <p>Conectado a la cuenta: {account}</p>
       ) : (
         <button onClick={connectMetaMask}>Conectar MetaMask</button>
       )}
-      <button onClick={requestEth} disabled={loading}>
-        {loading ? 'Solicitando...' : 'Solicitar 0.01 ETH'}
+      <button onClick={requestEth} disabled={loading || !account}>
+        {loading ? 'Solicitando...' : 'Solicitar 0.1 ETH'}
       </button>
       {message && <p>{message}</p>}
       {error && <p>Error: {error}</p>}
