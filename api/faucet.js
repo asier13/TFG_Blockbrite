@@ -2,7 +2,6 @@ const { ethers } = require('ethers');
 const dotenv = require('dotenv');
 const path = require('path');
 
-// Cargar el archivo .env desde el directorio raíz
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const { PRIVATE_KEY, SEPOLIA_RPC_URL } = process.env;
