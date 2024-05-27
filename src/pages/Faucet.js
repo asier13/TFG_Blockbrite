@@ -19,7 +19,7 @@ const Faucet = () => {
     setMessage('');
 
     try {
-      const response = await axios.post('../../faucet', { address: account });
+      const response = await axios.post('/api/faucet', { address: account });
       setMessage(`ETH enviado exitosamente. Tx Hash: ${response.data.txHash}`);
     } catch (error) {
       setMessage('Error al solicitar ETH');

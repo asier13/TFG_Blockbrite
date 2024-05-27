@@ -1,5 +1,8 @@
 const { ethers } = require('ethers');
-require('dotenv').config();
+const dotenv = require('dotenv');
+const path = require('path');
+
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const { PRIVATE_KEY, SEPOLIA_RPC_URL } = process.env;
 
@@ -12,7 +15,6 @@ const wallet = new ethers.Wallet(PRIVATE_KEY, provider);
 
 const faucetRequests = {};
 
-// Endpoint para solicitar ETH
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     res.status(405).send({ error: 'Only POST requests are allowed' });
