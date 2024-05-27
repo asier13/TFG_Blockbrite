@@ -47,7 +47,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    console.log("Enviando transacción");
+    console.log("Enviando transacción a la dirección:", address);
     const tx = await wallet.sendTransaction({
       to: address,
       value: ethers.parseEther('0.1')

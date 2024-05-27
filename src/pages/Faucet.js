@@ -19,7 +19,7 @@ const Faucet = () => {
     setMessage('');
 
     try {
-      const response = await axios.post('/api/faucet', { address: account }, {
+      const response = await axios.post('../../api/faucet', { address: account }, {
         headers: {
           'Content-Type': 'application/json'
         }
