@@ -6,7 +6,6 @@ const useMetaMask = () => {
   const [error, setError] = useState(null);
   const [isConnecting, setIsConnecting] = useState(false);
 
-  // Conectar a MetaMask
   const connectMetaMask = async () => {
     setIsConnecting(true);
     try {
@@ -14,6 +13,7 @@ const useMetaMask = () => {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = provider.getSigner();
       setAccount(await signer.getAddress());
+      
       setError(null);
     } catch (err) {
       setError('Failed to connect to MetaMask: ' + err.message);
@@ -26,7 +26,6 @@ const useMetaMask = () => {
       const provider = new ethers.BrowserProvider(window.ethereum);
 
       provider.getNetwork().then((network) => {
-        // Comprobar si la cadena de bloques es la correcta de Sepolia
         if (network.chainId !== 11155111) {
           setError('Please switch to the Sepolia Testnet.');
         }

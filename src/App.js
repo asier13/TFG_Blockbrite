@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Marketplace from './pages/Marketplace';
 import CreateNFT from './pages/CreateNFT';
 import Profile from './pages/Profile';
+import Faucet from './pages/Faucet';
 
 import './App.css';
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/create-nft" element={<CreateNFT />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/faucet" element={<Faucet />} />
         </Routes>
         <Footer />
       </div>

@@ -108,6 +108,7 @@ const Profile = () => {
           <Link to="/" className="nav-link">Inicio</Link>
           <Link to="/marketplace" className="nav-link">Marketplace</Link>
           <Link to="/create-nft" className="nav-link">Crear NFT</Link>
+          <Link to="/faucet" className="nav-link">Faucet</Link>
           <Link to="/profile"><img src={wallet} alt="wallet Logo" className="wallet"/></Link>
         </nav>
       </header>
