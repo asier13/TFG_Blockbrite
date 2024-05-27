@@ -26,7 +26,8 @@ const Faucet = () => {
       });
       setMessage(`ETH enviado exitosamente. Tx Hash: ${response.data.txHash}`);
     } catch (error) {
-      setMessage('Error al solicitar ETH');
+      console.error('Error al solicitar ETH:', error);
+      setMessage('Error al solicitar ETH: ' + (error.response?.data?.error || 'Unknown error'));
     } finally {
       setLoading(false);
     }

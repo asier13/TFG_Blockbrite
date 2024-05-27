@@ -19,6 +19,7 @@ const faucetRequests = {};
 // Endpoint para solicitar ETH
 module.exports = async (req, res) => {
   console.log("Solicitud recibida");
+
   if (req.method !== 'POST') {
     res.status(405).send({ error: 'Only POST requests are allowed' });
     return;
@@ -27,7 +28,12 @@ module.exports = async (req, res) => {
   const { address } = req.body;
   console.log("Dirección recibida:", address);
 
-  if (!ethers.isAddress(address)) {
+  if (!address) {
+    res.status(400).send({ error: 'Dirección de Ethereum no proporcionada' });
+    return;
+  }
+
+  if (!ethers.utils.isAddress(address)) {
     res.status(400).send({ error: 'Dirección de Ethereum inválida' });
     return;
   }
@@ -44,7 +50,7 @@ module.exports = async (req, res) => {
     console.log("Enviando transacción");
     const tx = await wallet.sendTransaction({
       to: address,
-      value: ethers.utils.parseEther('0.1')
+      value: ethers.parseEther('0.1')
     });
 
     await tx.wait();
@@ -53,6 +59,6 @@ module.exports = async (req, res) => {
     res.send({ success: true, txHash: tx.hash });
   } catch (error) {
     console.error('Error al enviar ETH:', error);
-    res.status(500).send({ error: 'Error al enviar ETH' });
+    res.status(500).send({ error: 'Error al enviar ETH', details: error.message });
   }
 };
