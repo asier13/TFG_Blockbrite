@@ -1,7 +1,7 @@
 import React from 'react';
 import '../NFTCard.css';
 
-const NFTCard_Sale = React.memo(({ nft, delistNft }) => {
+const NFTCardSale = React.memo(({ nft, delistNft }) => {
   const handleDelistClick = () => {
     delistNft(nft.tokenId);
   };
@@ -19,4 +19,4 @@ const NFTCard_Sale = React.memo(({ nft, delistNft }) => {
   );
 });
 
-export default NFTCard_Sale;
+export default NFTCardSale;

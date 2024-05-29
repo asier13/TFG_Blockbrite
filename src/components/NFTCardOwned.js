@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const NFTCard_Owned = React.memo(({ nft, listNftForSale, account }) => {
+const NFTCardOwned = React.memo(({ nft, listNftForSale, account }) => {
     const [userPrice, setUserPrice] = useState('');
     const address = (account.address || account).toString().toLowerCase();
     const creator = nft.originalCreator ? nft.originalCreator.toString().toLowerCase() : 'undefined';
@@ -39,4 +39,4 @@ const NFTCard_Owned = React.memo(({ nft, listNftForSale, account }) => {
     );
 });
 
-export default NFTCard_Owned;
+export default NFTCardOwned;
