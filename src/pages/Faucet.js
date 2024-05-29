@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+// src/pages/Faucet.js
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import useMetaMask from '../hooks/useMetaMask';
 import wallet from '../assets/wallet.png';
 import logo from '../assets/logo.png';
+import React, { useState } from 'react';
+import axios from 'axios';
+import useMetaMask from '../hooks/useMetaMask'; 
 
 const Faucet = () => {
   const { account, connectMetaMask, error } = useMetaMask();
@@ -19,15 +20,10 @@ const Faucet = () => {
     setMessage('');
 
     try {
-      const response = await axios.post('/api/faucet', { address: account }, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+      const response = await axios.post('http://localhost:3001/request-eth', { address: account });
       setMessage(`ETH enviado exitosamente. Tx Hash: ${response.data.txHash}`);
     } catch (error) {
-      console.error('Error al solicitar ETH:', error);
-      setMessage('Error al solicitar ETH: ' + (error.response?.data?.error || 'Unknown error'));
+      setMessage('Error al solicitar ETH');
     } finally {
       setLoading(false);
     }
@@ -51,8 +47,8 @@ const Faucet = () => {
       ) : (
         <button onClick={connectMetaMask}>Conectar MetaMask</button>
       )}
-      <button onClick={requestEth} disabled={loading || !account}>
-        {loading ? 'Solicitando...' : 'Solicitar 0.1 ETH'}
+      <button onClick={requestEth} disabled={loading}>
+        {loading ? 'Solicitando...' : 'Solicitar 0.01 ETH'}
       </button>
       {message && <p>{message}</p>}
       {error && <p>Error: {error}</p>}

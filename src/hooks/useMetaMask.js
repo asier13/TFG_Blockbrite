@@ -12,8 +12,8 @@ const useMetaMask = () => {
       await window.ethereum.request({ method: 'eth_requestAccounts' });
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = provider.getSigner();
-      const address = await signer.getAddress();
-      setAccount(address);
+      setAccount(await signer.getAddress());
+      
       setError(null);
     } catch (err) {
       setError('Failed to connect to MetaMask: ' + err.message);
@@ -35,7 +35,7 @@ const useMetaMask = () => {
         if (accounts.length > 0) {
           setAccount(accounts[0]);
         }
-      }).catch(err => setError(err.message));
+      }).catch(setError);
 
       window.ethereum.on('accountsChanged', (accounts) => {
         if (accounts.length > 0) {
@@ -49,10 +49,8 @@ const useMetaMask = () => {
     }
 
     return () => {
-      if (window.ethereum) {
-        window.ethereum.removeListener('accountsChanged', connectMetaMask);
-        window.ethereum.removeListener('chainChanged', (_chainId) => window.location.reload());
-      }
+      window.ethereum.removeListener('accountsChanged', connectMetaMask);
+      window.ethereum.removeListener('chainChanged', (_chainId) => window.location.reload());
     };
   }, []);
 

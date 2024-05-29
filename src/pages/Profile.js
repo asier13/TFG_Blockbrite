@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import useMetaMask from '../hooks/useMetaMask';
-import NFTCardSale from '../components/NFTCardSale';
-import NFTCardOwned from '../components/NFTCardOwned';
+import NFTCard_Sale from '../components/NFTCard_Sale';
+import NFTCard_Owned from '../components/NFTCard_Owned';
 import { getOwnedNFTs, getNFTsOnSale } from '../utils/nftHelpers';
 import MyNFTAbi from '../abis/Blockbrite.json';
 import contractAddress from '../contractAddress';
@@ -117,7 +117,7 @@ const Profile = () => {
         <h2>Owned NFTs</h2>
         <div className="nft-grid">
           {ownedNFTs.map(nft => (
-            <NFTCardOwned key={nft.tokenId} nft={nft} listNftForSale={listNftForSale} account={account} />
+            <NFTCard_Owned key={nft.tokenId} nft={nft} listNftForSale={listNftForSale} account={account} />
         ))}
         </div>
       </section>
@@ -125,7 +125,7 @@ const Profile = () => {
         <h2>NFTs for Sale</h2>
         <div className="nft-grid">
           {saleNFTs.map(nft => (
-            <NFTCardSale key={nft.tokenId} nft={nft} delistNft={delistNft} />
+            <NFTCard_Sale key={nft.tokenId} nft={nft} delistNft={delistNft} />
           ))}
         </div>
       </section>
