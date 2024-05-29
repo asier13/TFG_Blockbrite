@@ -1,4 +1,3 @@
-// src/pages/Faucet.js
 import { Link } from 'react-router-dom';
 import wallet from '../assets/wallet.png';
 import logo from '../assets/logo.png';
@@ -20,7 +19,7 @@ const Faucet = () => {
     setMessage('');
 
     try {
-      const response = await axios.post('http://localhost:3001/request-eth', { address: account });
+      const response = await axios.post('/api/faucet', { address: account });
       setMessage(`ETH enviado exitosamente. Tx Hash: ${response.data.txHash}`);
     } catch (error) {
       setMessage('Error al solicitar ETH');
@@ -48,7 +47,7 @@ const Faucet = () => {
         <button onClick={connectMetaMask}>Conectar MetaMask</button>
       )}
       <button onClick={requestEth} disabled={loading}>
-        {loading ? 'Solicitando...' : 'Solicitar 0.01 ETH'}
+        {loading ? 'Solicitando...' : 'Solicitar 0.1 ETH'}
       </button>
       {message && <p>{message}</p>}
       {error && <p>Error: {error}</p>}

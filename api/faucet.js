@@ -1,3 +1,4 @@
+// api/faucet.js
 const { ethers } = require('ethers');
 const dotenv = require('dotenv');
 dotenv.config();
@@ -9,7 +10,7 @@ if (!PRIVATE_KEY || !SEPOLIA_RPC_URL) {
   process.exit(1);
 }
 
-// Configura tu provider y wallet
+// Configura tu provider y wallet2
 const provider = new ethers.JsonRpcProvider(SEPOLIA_RPC_URL);
 const wallet = new ethers.Wallet(PRIVATE_KEY, provider);
 
@@ -38,11 +39,11 @@ module.exports = async (req, res) => {
   try {
     const tx = await wallet.sendTransaction({
       to: address,
-      value: ethers.parseEther('0.1') // Cantidad a enviar
+      value: ethers.parseEther('0.1') 
     });
 
     await tx.wait();
-    faucetRequests[address] = currentTime; // Registra la solicitud de faucet
+    faucetRequests[address] = currentTime; x
     res.send({ success: true, txHash: tx.hash });
   } catch (error) {
     console.error('Error al enviar ETH:', error);
