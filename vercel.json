@@ -1,19 +1,5 @@
 {
     "version": 2,
-    "builds": [
-      {
-        "src": "api/faucet.js",
-        "use": "@vercel/node"
-      },
-      {
-        "src": "public/**/*",
-        "use": "@vercel/static"
-      },
-      {
-        "src": "package.json",
-        "use": "@vercel/static-build"
-      }
-    ],
     "routes": [
       {
         "src": "/api/faucet",
