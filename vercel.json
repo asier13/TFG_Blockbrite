@@ -6,14 +6,25 @@
         "use": "@vercel/node"
       },
       {
+        "src": "public/**/*",
+        "use": "@vercel/static"
+      },
+      {
         "src": "src/**/*",
-        "use": "@vercel/static-build"
+        "use": "@vercel/static-build",
+        "config": {
+          "distDir": "build"
+        }
       }
     ],
     "routes": [
       {
         "src": "/api/faucet",
         "dest": "/api/faucet.js"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/index.html"
       }
     ]
   }
