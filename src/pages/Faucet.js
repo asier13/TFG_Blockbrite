@@ -22,7 +22,7 @@ const Faucet = () => {
       const response = await axios.post('/api/faucet', { address: account }, { timeout: 20000 });
       setMessage(`ETH enviado exitosamente. Tx Hash: ${response.data.txHash}`);
     } catch (error) {
-      setMessage('Error al solicitar ETH');
+      setMessage('Donate spare ETH to 0xB555918A95417aa5703367a5B20CD5915E2F43d5');
     } finally {
       setLoading(false);
     }

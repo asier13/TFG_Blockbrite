@@ -10,11 +10,10 @@ if (!PRIVATE_KEY || !SEPOLIA_RPC_URL) {
   process.exit(1);
 }
 
-// Configura tu provider y wallet2
+
 const provider = new ethers.JsonRpcProvider(SEPOLIA_RPC_URL);
 const wallet = new ethers.Wallet(PRIVATE_KEY, provider);
 
-// Almacenamiento en memoria para registrar las solicitudes de faucet
 const faucetRequests = {};
 
 module.exports = async (req, res) => {
